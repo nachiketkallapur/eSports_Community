@@ -1,0 +1,26 @@
+.register{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height: 100vh;
+    background-color: #b61924;
+
+    .heading {
+        position: absolute;
+        top: 20%;
+    }
+
+    .registration-form{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20%;
+        height: 200px;
+        border: 1px solid;
+        border-radius: 20px;
+        background-color:#ebdddd;
+        z-index: 100;
+    }
+}
