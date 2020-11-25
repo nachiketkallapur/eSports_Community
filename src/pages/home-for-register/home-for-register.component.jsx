@@ -31,7 +31,7 @@ const HomeForRegister = ({ match, history }) => {
   };
 
   return (
-    <div className="register">
+    <div className="home-for-register">
       <h1 className="heading">Choose User Type and click Next</h1>
       <div className="registration-form">
         <FormControl component="fieldset">
@@ -67,7 +67,7 @@ const HomeForRegister = ({ match, history }) => {
         </Button>
       </div>
 
-      <Particles
+      {/* <Particles
         height="95vh"
         width="95vw"
         params={{
@@ -81,7 +81,7 @@ const HomeForRegister = ({ match, history }) => {
             },
           },
         }}
-      />
+      /> */}
     </div>
   );
 };
