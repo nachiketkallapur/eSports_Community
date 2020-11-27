@@ -8,11 +8,22 @@ class CompanyForm extends Component {
     state = {
         companyName: "",
         companyLocation: "",
-        companyBio: ""
+        companyBio: "",
     }
 
+    
     handleSubmit = (event) => {
         event.preventDefault();
+
+        fetch('http://localhost:8080/company/',{
+            method:'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state),
+        })
+        .then(res => res.text())
+        .then(res => console.log(res))
+        .catch(err => console.log(err.message))
+        
     }
 
     handleChange = (event) => {

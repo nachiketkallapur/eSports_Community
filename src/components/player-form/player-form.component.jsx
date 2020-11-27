@@ -28,6 +28,17 @@ class PlayerForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();  
+
+        /*Don't consier start date in backend if channel name is empty*/
+
+        fetch('http://localhost:8080/player/',{
+            method:'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state),
+        })
+        .then(res => res.text())
+        .then(res => console.log(res))
+        .catch(err => err.message)
     }
     
     handleChange = (event) => {
