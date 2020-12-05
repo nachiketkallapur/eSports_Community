@@ -1,0 +1,12 @@
+.header {
+    position: absolute;
+    z-index:100;
+    width:100%;
+    opacity: 0.8;
+    color:red;
+
+    .toolbar {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}

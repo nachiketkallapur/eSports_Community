@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomeForRegister = ({ match,history }) => {
-  const classes = useStyles();
+const HomeForRegister = ({ match, history }) => {
+  // const classes = useStyles();
   const [userType, setUserType] = useState("player");
 
   const handleChange = (event) => {
@@ -31,7 +31,7 @@ const HomeForRegister = ({ match,history }) => {
   };
 
   return (
-    <div className="register">
+    <div className="home-for-register">
       <h1 className="heading">Choose User Type and click Next</h1>
       <div className="registration-form">
         <FormControl component="fieldset">
@@ -46,7 +46,11 @@ const HomeForRegister = ({ match,history }) => {
               control={<Radio />}
               label="Player"
             />
-            <FormControlLabel value="clan" control={<Radio />} label="Clan" />
+            <FormControlLabel
+              value="clan"
+              control={<Radio />}
+              label="Clan"
+            />
             <FormControlLabel
               value="company"
               control={<Radio />}
@@ -57,13 +61,13 @@ const HomeForRegister = ({ match,history }) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={()=>history.push(`${match.url}/${userType}`)}
+          onClick={() => history.push(`${match.url}/${userType}`)}
         >
           Next
         </Button>
       </div>
 
-      <Particles
+      {/* <Particles
         height="95vh"
         width="95vw"
         params={{
@@ -77,7 +81,7 @@ const HomeForRegister = ({ match,history }) => {
             },
           },
         }}
-      />
+      /> */}
     </div>
   );
 };
