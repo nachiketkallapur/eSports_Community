@@ -9,4 +9,19 @@
         display: flex;
         flex-direction: row-reverse;
     }
+
+    .nav-bar{
+        background-color: rgb(175, 0, 250);
+        padding-bottom: 5px;
+        border-radius: 10px;
+        border-color: orange;
+    }
+
+    .Login:hover{
+        background-color:yellow;
+        color:red;
+        border-color: red;
+
+    }
 }
+
