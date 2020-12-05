@@ -10,9 +10,9 @@ import {
     Radio,
 } from '@material-ui/core/';
 
-import DateFnsUtils from '@date-io/date-fns';
+// import DateFnsUtils from '@date-io/date-fns';
 
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+// import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 class PlayerForm extends Component {
     state = {
@@ -22,25 +22,23 @@ class PlayerForm extends Component {
         playerCity: "",
         playerState: "",
         playerYTChannel: "",
-        playerYTStartDate: new Date(),
-        playerYTSubscribers: ""
+        playerUsername: "",
+        playerPassword: ""
     }
 
     handleSubmit = (event) => {
-        event.preventDefault();  
+        event.preventDefault();
 
-        /*Don't consier start date in backend if channel name is empty*/
-
-        fetch('http://localhost:8080/player/',{
-            method:'POST',
+        fetch('http://localhost:8080/player/', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-        .then(res => res.text())
-        .then(res => console.log(res))
-        .catch(err => err.message)
+            .then(res => res.text())
+            .then(res => console.log(res))
+            .catch(err => err.message)
     }
-    
+
     handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -59,12 +57,12 @@ class PlayerForm extends Component {
             playerCity,
             playerState,
             playerYTChannel,
-            playerYTStartDate,
-            playerYTSubscribers
+            playerUsername,
+            playerPassword
         } = this.state;
         return (
             <div>
-                <h1>Register Form for player</h1>
+                <h2>Register Form for player</h2>
                 <form onSubmit={this.handleSubmit} autoComplete="off">
                     <TextField
                         required
@@ -135,6 +133,27 @@ class PlayerForm extends Component {
                         style={{ width: "350px", margin: "5px 0px" }}
                     /><br />
                     <TextField
+                        required
+                        id="filled-required"
+                        label="Player Username(for login puspose)"
+                        name="playerUsername"
+                        value={playerUsername}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required"
+                        label="Player Password(for login puspose)"
+                        name="playerPassword"
+                        value={playerPassword}
+                        type="password"
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
                         id="filled-required"
                         label="Player YouTube Channel Name"
                         name="playerYTChannel"
@@ -143,7 +162,7 @@ class PlayerForm extends Component {
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}
                     /><br />
-                    {
+                    {/* {
                         this.state.playerYTChannel && (
                             <div>
                                 <TextField
@@ -181,7 +200,7 @@ class PlayerForm extends Component {
                                 <br /><br />
                             </div>
                         )
-                    }
+                    } */}
 
                     <Button
                         variant="contained"
