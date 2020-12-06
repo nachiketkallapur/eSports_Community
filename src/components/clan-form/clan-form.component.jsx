@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     Radio,
 } from '@material-ui/core/';
+import {withRouter} from 'react-router-dom';
 
 class ClanForm extends Component {
 
@@ -15,7 +16,11 @@ class ClanForm extends Component {
         clanName: "",
         clanCategory: "casual",
         clanSize: "",
-        clanGame: ""
+        clanGame: "",
+        clanUsername:"",
+        clanPassword:"",
+        res:"",
+        err:""
     }
 
     handleSubmit = (event) => {
@@ -26,9 +31,14 @@ class ClanForm extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-        .then(res => res.text())
-        .then(res => console.log(res))
-        .catch(err => err.message)
+        .then(async (res) => await this.setState({ res: await res.text() }))
+            .catch(async (error) => await this.setState({ err: true,res: error  }))
+            .finally(res => {
+                alert(this.state.res);
+                if (this.state.res === "Successfully added data to database") {
+                    this.props.history.push(`/updateProfile/${this.state.clanUsername}`);
+                }
+            })
     }
 
     handleChange = (event) => {
@@ -42,7 +52,9 @@ class ClanForm extends Component {
             clanName,
             clanCategory,
             clanSize,
-            clanGame
+            clanGame,
+            clanUsername,
+            clanPassword
         } = this.state;
         return (
             <div>
@@ -50,7 +62,7 @@ class ClanForm extends Component {
                 <form onSubmit={this.handleSubmit} autoComplete="off">
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-1"
                         label="Clan Name"
                         name="clanName"
                         value={clanName}
@@ -60,7 +72,7 @@ class ClanForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-2"
                         label="Clan Game"
                         name="clanGame"
                         value={clanGame}
@@ -91,11 +103,32 @@ class ClanForm extends Component {
                     <br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-3"
                         label="Clan Size"
                         name="clanSize"
                         type="number"
                         value={clanSize}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-4"
+                        label="Clan Username"
+                        name="clanUsername"
+                        value={clanUsername}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-5"
+                        label="Clan Password"
+                        name="clanPassword"
+                        value={clanPassword}
+                        type="password"
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}
@@ -113,4 +146,4 @@ class ClanForm extends Component {
     }
 }
 
-export default ClanForm;
+export default withRouter(ClanForm);

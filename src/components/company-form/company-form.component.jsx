@@ -9,6 +9,10 @@ class CompanyForm extends Component {
         companyName: "",
         companyLocation: "",
         companyBio: "",
+        companyUsername:"",
+        companyPassword:"",
+        res:"",
+        err:false
     }
 
     
@@ -20,9 +24,17 @@ class CompanyForm extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-        .then(res => res.text())
-        .then(res => console.log(res))
-        .catch(err => console.log(err.message))
+        .then(async (res) => this.setState({ res: await res.text() }))
+            .catch(async (err) => this.setState({ res: await err.message, err: true }))
+            .finally(res => {
+                if (this.state.err) {
+                    return alert(this.state.res);
+                }
+                else {
+                    alert(this.state.res);
+                    this.props.history.push(`/updateProfile/${this.state.companyUsername}`)
+                }
+            })
         
     }
 
@@ -37,7 +49,9 @@ class CompanyForm extends Component {
         const {
             companyName,
             companyLocation,
-            companyBio
+            companyBio,
+            companyUsername,
+            companyPassword
         } = this.state;
         return (
             <div>
@@ -45,7 +59,7 @@ class CompanyForm extends Component {
                 <form onSubmit={this.handleSubmit} autoComplete="off">
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-1"
                         label="Company Name"
                         name="companyName"
                         value={companyName}
@@ -55,7 +69,7 @@ class CompanyForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-2"
                         label="Company Location"
                         name="companyLocation"
                         value={companyLocation}
@@ -65,10 +79,31 @@ class CompanyForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-3"
                         label="Company Bio"
                         name="companyBio"
                         value={companyBio}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-4"
+                        label="Company Username"
+                        name="companyUsername"
+                        value={companyUsername}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-5"
+                        label="Company Password"
+                        name="companyPassword"
+                        value={companyPassword}
+                        type="password"
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}

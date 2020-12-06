@@ -9,6 +9,7 @@ import {
     FormControlLabel,
     Radio,
 } from '@material-ui/core/';
+import { withRouter } from 'react-router-dom';
 
 // import DateFnsUtils from '@date-io/date-fns';
 
@@ -23,10 +24,12 @@ class PlayerForm extends Component {
         playerState: "",
         playerYTChannel: "",
         playerUsername: "",
-        playerPassword: ""
+        playerPassword: "",
+        res: "",
+        err: ""
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         fetch('http://localhost:8080/player/', {
@@ -34,9 +37,22 @@ class PlayerForm extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-            .then(res => res.text())
-            .then(res => console.log(res))
-            .catch(err => err.message)
+            .then(async (res) => await this.setState({ res: await res.text() }))
+            .catch(async (error) => await this.setState({ res: error }))
+            .finally(res => {
+
+                alert(this.state.res);
+                if (this.state.res === "Successfully added data to database") {
+                    this.props.history.push(`/updateProfile/${this.state.playerUsername}`);
+                }
+
+            })
+
+        // if(!this.state.err){
+        //     return (
+        //         <Redirect to={`/updateProfile/${this.state.playerUsername}`} />
+        //     )
+        // }
     }
 
     handleChange = (event) => {
@@ -45,11 +61,14 @@ class PlayerForm extends Component {
         this.setState({ [name]: value }, () => console.log(this.state))
     };
 
-    handleDateChange = (date) => {
-        this.setState({ playerYTStartDate: date })
-    }
+    // handleDateChange = (date) => {
+    //     this.setState({ playerYTStartDate: date })
+    // }
 
     render() {
+
+        console.log(this.props);
+
         const {
             playerName,
             playerAge,
@@ -60,13 +79,16 @@ class PlayerForm extends Component {
             playerUsername,
             playerPassword
         } = this.state;
+
+
+
         return (
             <div>
                 <h2>Register Form for player</h2>
                 <form onSubmit={this.handleSubmit} autoComplete="off">
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-1"
                         label="Player Name"
                         name="playerName"
                         value={playerName}
@@ -76,7 +98,7 @@ class PlayerForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-2"
                         label="Player Age"
                         name="playerAge"
                         value={playerAge}
@@ -114,7 +136,7 @@ class PlayerForm extends Component {
                     <br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-3"
                         label="Player City"
                         name="playerCity"
                         value={playerCity}
@@ -124,7 +146,7 @@ class PlayerForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-4"
                         label="Player State"
                         name="playerState"
                         value={playerState}
@@ -134,7 +156,7 @@ class PlayerForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-5"
                         label="Player Username(for login puspose)"
                         name="playerUsername"
                         value={playerUsername}
@@ -144,7 +166,7 @@ class PlayerForm extends Component {
                     /><br />
                     <TextField
                         required
-                        id="filled-required"
+                        id="filled-required-6"
                         label="Player Password(for login puspose)"
                         name="playerPassword"
                         value={playerPassword}
@@ -154,7 +176,7 @@ class PlayerForm extends Component {
                         style={{ width: "350px", margin: "5px 0px" }}
                     /><br />
                     <TextField
-                        id="filled-required"
+                        id="filled-required-7"
                         label="Player YouTube Channel Name"
                         name="playerYTChannel"
                         value={playerYTChannel}
@@ -215,4 +237,4 @@ class PlayerForm extends Component {
     }
 }
 
-export default PlayerForm;
+export default withRouter(PlayerForm);
