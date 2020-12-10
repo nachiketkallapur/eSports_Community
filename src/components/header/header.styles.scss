@@ -1,27 +1,44 @@
-.header {
-    position: absolute;
+// .header {
+//     position: absolute;
+//     z-index:100;
+//     width:100%;
+//     opacity: 0.8;
+//     color:red;
+
+//     .toolbar {
+//         display: flex;
+//         flex-direction: row-reverse;
+//     }
+
+//     .nav-bar{
+//         background-color: rgb(175, 0, 250);
+//         padding-bottom: 5px;
+//         border-radius: 10px;
+//         border-color: orange;
+//     }
+
+//     .Login:hover{
+//         background-color:yellow;
+//         color:red;
+//         border-color: red;
+
+//     }
+// }
+
+// #theMenu {
+//     position: fixed;
+//     align-content: space-around;
+//     left: 0;
+//     top: 0;
+//     transform: translate3d(-100vw, 0, 0);
+         
+//     width: 100vw;
+//     height: 100vh;
+// }       
+
+.header-container{
+    opacity:0.5;
+    position:absolute;
     z-index:100;
-    width:100%;
-    opacity: 0.8;
-    color:red;
-
-    .toolbar {
-        display: flex;
-        flex-direction: row-reverse;
-    }
-
-    .nav-bar{
-        background-color: rgb(175, 0, 250);
-        padding-bottom: 5px;
-        border-radius: 10px;
-        border-color: orange;
-    }
-
-    .Login:hover{
-        background-color:yellow;
-        color:red;
-        border-color: red;
-
-    }
 }
 
