@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import {
-  makeStyles,
   FormControl,
   RadioGroup,
   FormControlLabel,
   Radio,
   Button,
 } from "@material-ui/core";
-import Particles from "react-particles-js";
+// import Particles from "react-particles-js";
 import "./home-for-register.styles.scss";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//   },
+//   formControl: {
+//     margin: theme.spacing(3),
+//   },
+// }));
 
 const HomeForRegister = ({ match, history }) => {
   // const classes = useStyles();

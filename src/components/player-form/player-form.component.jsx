@@ -26,7 +26,7 @@ class PlayerForm extends Component {
         playerUsername: "",
         playerPassword: "",
         res: "",
-        err: ""
+        err: false
     }
 
     handleSubmit = async (event) => {
@@ -37,23 +37,21 @@ class PlayerForm extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-            .then(async (res) => await this.setState({ res: await res.text() }))
-            .catch(async (error) => await this.setState({ res: error }))
+            .then(async (res) => this.setState({ res: await res.text() }))
+            .catch((error) => this.setState({ res: error, err: true }))
             .finally(res => {
 
+                console.log(this.state);
                 alert(this.state.res);
                 if (this.state.res === "Successfully added data to database") {
                     this.props.history.push(`/updateProfile/${this.state.playerUsername}`);
                 }
 
             })
-
-        // if(!this.state.err){
-        //     return (
-        //         <Redirect to={`/updateProfile/${this.state.playerUsername}`} />
-        //     )
-        // }
     }
+        
+
+
 
     handleChange = (event) => {
         const { name, value } = event.target;
