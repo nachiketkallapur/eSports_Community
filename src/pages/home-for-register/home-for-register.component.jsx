@@ -65,22 +65,6 @@ const HomeForRegister = ({ match, history }) => {
           Next
         </Button>
       </div>
-
-      {/* <Particles
-        height="95vh"
-        width="95vw"
-        params={{
-          particles: {
-            number: {
-              value: 200,
-              density: {
-                enable: true,
-                value_area: 1000,
-              },
-            },
-          },
-        }}
-      /> */}
     </div>
   );
 };

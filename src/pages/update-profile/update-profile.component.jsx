@@ -1,6 +1,6 @@
-import { TrainOutlined } from '@material-ui/icons';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import UpdatePlayer from '../../components/update-player/update-player.component';
+import UpdateClan from '../../components/update-clan/update-clan.component';
 
 class UpdateProfile extends Component {
 
@@ -10,10 +10,12 @@ class UpdateProfile extends Component {
         playerData: null,
         youtubeData: null,
         citystateData: null,
+        clanData:null,
         gameData: [],
         gameFetch:false,
         playerFetch:false,
         youtubeFetch:false,
+        clanFetch:false,
         error: false,
         message: ""
     }
@@ -45,7 +47,7 @@ class UpdateProfile extends Component {
                     // console.log("PYD: ",data);
                     if (data.length === 0) {
                         alert(message);
-                        this.props.history.push("/");
+                        this.props.history.push("/login");
                         return;
                         // this.setState({ error: true, message, userType, username, playerData: {} });
                     } else {
@@ -75,7 +77,7 @@ class UpdateProfile extends Component {
                     } else if (data.length === 0) {
                         // console.log("Line63");
                         alert(message);
-                        this.setState({ error: false, message, youtubeData: {} })
+                        this.setState({ error: false, message, youtubeData: {},youtubeFetch:true })
                     }
                     else {
                         this.setState({ error: false, youtubeData: data[0], message,youtubeFetch:true })
@@ -148,7 +150,37 @@ class UpdateProfile extends Component {
         }
         else if (userType === "clan") {
 
+            /*Fetch clan data*/
+            fetch('http://localhost:8080/clan/fetch/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clanUsername:username,
+                    all: false
+                })
+            })
+            .then(async(res) => res.json())
+            .then(({message,error,data}) => {
+                if(error===true){
+                    alert(message);
+                    this.setState({message,error,clanData:{}})
+                } else if(data.length===0){
+                    alert("Clan doesn;t exist in our records");
+                    // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
+                    this.props.history.push("/login");
+                    return;
+                } 
+                else {
+                    this.setState({message,error:false,clanData:data[0],clanFetch:true})
+                }
+            })
+            .catch((error) => {
+                alert(error.message);
+                this.setState({ error: true, message: error.messge, clanData: {} })
+            })
+
         }
+
         else if (userType === "company") {
 
         }
@@ -190,7 +222,14 @@ class UpdateProfile extends Component {
                     />
                 </div>
             )
-        } else {
+        } else if(this.state.error === false && this.state.userType === "clan"
+        && this.state.clanFetch ) {
+            return (
+                <UpdateClan clanData={this.state.clanData} />
+            )
+        }
+        
+        else {
 
             return (
                 <h1>Update Profile Page</h1>
