@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UpdatePlayer from '../../components/update-player/update-player.component';
 import UpdateClan from '../../components/update-clan/update-clan.component';
+import UpdateCompany from '../../components/update-company/update-company.component';
 
 class UpdateProfile extends Component {
 
@@ -11,11 +12,13 @@ class UpdateProfile extends Component {
         youtubeData: null,
         citystateData: null,
         clanData:null,
+        companyData:null,
         gameData: [],
         gameFetch:false,
         playerFetch:false,
         youtubeFetch:false,
         clanFetch:false,
+        companyFetch:false,
         error: false,
         message: ""
     }
@@ -183,6 +186,35 @@ class UpdateProfile extends Component {
 
         else if (userType === "company") {
 
+            /*Fetch clan data*/
+            fetch('http://localhost:8080/company/fetch/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    companyUsername:username,
+                    all: false
+                })
+            })
+            .then(async(res) => res.json())
+            .then(({message,error,data}) => {
+                if(error===true){
+                    alert(message);
+                    this.setState({message,error,companyData:{}})
+                } else if(data.length===0){
+                    alert("Company doesn't exist in our records");
+                    // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
+                    this.props.history.push("/login");
+                    return;
+                } 
+                else {
+                    this.setState({message,error:false,companyData:data[0],companyFetch:true})
+                }
+            })
+            .catch((error) => {
+                alert(error.message);
+                this.setState({ error: true, message: error.messge, companyData: {} })
+            })
+
         }
     }
 
@@ -226,6 +258,11 @@ class UpdateProfile extends Component {
         && this.state.clanFetch ) {
             return (
                 <UpdateClan clanData={this.state.clanData} />
+            )
+        } else if(this.state.error === false && this.state.userType === "company"
+        && this.state.companyFetch){
+            return (
+                <UpdateCompany companyData={this.state.companyData} />
             )
         }
         
