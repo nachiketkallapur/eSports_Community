@@ -37,17 +37,17 @@ class UpdateClan extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { C_username, C_name, C_category, C_size, G_name } = this.state;
+        const { C_username, C_name, C_category, C_size, G_name,C_email,P_username } = this.state;
 
         fetch('http://localhost:8080/clan/update/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ C_username, C_name, C_category, C_size: parseInt(C_size), G_name })
+            body: JSON.stringify({ C_username, C_name, C_category, C_size: parseInt(C_size), G_name,C_email,P_username })
         })
             .then(async (res) => await res.json())
             .then(({ message, error }) => {
                 if (error) {
-                    alert(error);
+                    alert(message);
                     this.setState({ message, error: true });
                 } else {
                     alert(message);
@@ -72,8 +72,7 @@ class UpdateClan extends Component {
 
     render() {
         // console.log(this.props);
-        const { C_username, C_name, C_category, C_size, G_name, gamePresentPreviously } = this.state;
-
+        const { C_username, C_name, C_category, C_size, G_name, gamePresentPreviously,C_email,P_username } = this.state;
 
         return (
             <div>
@@ -160,6 +159,28 @@ class UpdateClan extends Component {
                         name="C_size"
                         defaultValue={C_size}
                         type="number"
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-4"
+                        label="Clan Email"
+                        name="C_email"
+                        defaultValue={C_email}
+                        type="email"
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-5"
+                        label="Clan Leader Username"
+                        name="P_username"
+                        defaultValue={P_username}
+                        type="email"
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}
