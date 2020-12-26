@@ -44,6 +44,7 @@ class PlayerForm extends Component {
                 console.log(this.state);
                 alert(this.state.res);
                 if (this.state.res === "Successfully added data to database") {
+                    localStorage.setItem('currentUser',this.state.playerUsername);
                     this.props.history.push(`/updateProfile/${this.state.playerUsername}`);
                 }
 

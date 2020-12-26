@@ -5,22 +5,31 @@ import UpdateCompany from '../../components/update-company/update-company.compon
 
 class UpdateProfile extends Component {
 
-    state = {
-        username: "",
-        userType: "",
-        playerData: null,
-        youtubeData: null,
-        citystateData: null,
-        clanData:null,
-        companyData:null,
-        gameData: [],
-        gameFetch:false,
-        playerFetch:false,
-        youtubeFetch:false,
-        clanFetch:false,
-        companyFetch:false,
-        error: false,
-        message: ""
+    constructor(props) {
+        super(props);
+
+        if (!localStorage.getItem("currentUser")) {
+            alert("Login to update your profile");
+            props.history.push('/login');
+        }
+
+        this.state = {
+            username: "",
+            userType: "",
+            playerData: null,
+            youtubeData: null,
+            citystateData: null,
+            clanData: null,
+            companyData: null,
+            gameData: [],
+            gameFetch: false,
+            playerFetch: false,
+            youtubeFetch: false,
+            clanFetch: false,
+            companyFetch: false,
+            error: false,
+            message: ""
+        }
     }
 
     componentWillMount() {
@@ -54,7 +63,7 @@ class UpdateProfile extends Component {
                         return;
                         // this.setState({ error: true, message, userType, username, playerData: {} });
                     } else {
-                        this.setState({ playerData: data[0], username, userType, message ,playerFetch:true });
+                        this.setState({ playerData: data[0], username, userType, message, playerFetch: true });
                     }
                 })
                 .catch((error) => {
@@ -80,10 +89,10 @@ class UpdateProfile extends Component {
                     } else if (data.length === 0) {
                         // console.log("Line63");
                         alert(message);
-                        this.setState({ error: false, message, youtubeData: {},youtubeFetch:true })
+                        this.setState({ error: false, message, youtubeData: {}, youtubeFetch: true })
                     }
                     else {
-                        this.setState({ error: false, youtubeData: data[0], message,youtubeFetch:true })
+                        this.setState({ error: false, youtubeData: data[0], message, youtubeFetch: true })
                     }
 
                 })
@@ -98,7 +107,7 @@ class UpdateProfile extends Component {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    playerUsername:username,
+                    playerUsername: username,
                     all: false
                 })
             })
@@ -109,9 +118,9 @@ class UpdateProfile extends Component {
                         this.setState({ error: true, message, gameData: [] })
                     } else if (data.length === 0) {
                         alert(message);
-                        this.setState({ error: false, message, gameData: [],gameFetch:true })
+                        this.setState({ error: false, message, gameData: [], gameFetch: true })
                     } else {
-                        this.setState({ error: false, message, gameData: data,gameFetch:true })
+                        this.setState({ error: false, message, gameData: data, gameFetch: true })
                     }
                 })
                 .catch((error) => {
@@ -158,62 +167,62 @@ class UpdateProfile extends Component {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    clanUsername:username,
+                    clanUsername: username,
                     all: false
                 })
             })
-            .then(async(res) => res.json())
-            .then(({message,error,data}) => {
-                if(error===true){
-                    alert(message);
-                    this.setState({message,error,clanData:{}})
-                } else if(data.length===0){
-                    alert("Clan doesn;t exist in our records");
-                    // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
-                    this.props.history.push("/login");
-                    return;
-                } 
-                else {
-                    this.setState({message,error:false,clanData:data[0],clanFetch:true})
-                }
-            })
-            .catch((error) => {
-                alert(error.message);
-                this.setState({ error: true, message: error.messge, clanData: {} })
-            })
+                .then(async (res) => res.json())
+                .then(({ message, error, data }) => {
+                    if (error === true) {
+                        alert(message);
+                        this.setState({ message, error, clanData: {} })
+                    } else if (data.length === 0) {
+                        alert("Clan doesn;t exist in our records");
+                        // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
+                        this.props.history.push("/login");
+                        return;
+                    }
+                    else {
+                        this.setState({ message, error: false, clanData: data[0], clanFetch: true })
+                    }
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    this.setState({ error: true, message: error.messge, clanData: {} })
+                })
 
         }
 
         else if (userType === "company") {
 
-            /*Fetch clan data*/
+            /*Fetch company data*/
             fetch('http://localhost:8080/company/fetch/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    companyUsername:username,
+                    companyUsername: username,
                     all: false
                 })
             })
-            .then(async(res) => res.json())
-            .then(({message,error,data}) => {
-                if(error===true){
-                    alert(message);
-                    this.setState({message,error,companyData:{}})
-                } else if(data.length===0){
-                    alert("Company doesn't exist in our records");
-                    // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
-                    this.props.history.push("/login");
-                    return;
-                } 
-                else {
-                    this.setState({message,error:false,companyData:data[0],companyFetch:true})
-                }
-            })
-            .catch((error) => {
-                alert(error.message);
-                this.setState({ error: true, message: error.messge, companyData: {} })
-            })
+                .then(async (res) => res.json())
+                .then(({ message, error, data }) => {
+                    if (error === true) {
+                        alert(message);
+                        this.setState({ message, error, companyData: {} })
+                    } else if (data.length === 0) {
+                        alert("Company doesn't exist in our records");
+                        // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
+                        this.props.history.push("/login");
+                        return;
+                    }
+                    else {
+                        this.setState({ message, error: false, companyData: data[0], companyFetch: true })
+                    }
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    this.setState({ error: true, message: error.messge, companyData: {} })
+                })
 
         }
     }
@@ -240,7 +249,7 @@ class UpdateProfile extends Component {
 
     render() {
 
-        
+
         console.log(this.state);
         if (this.state.error === false && this.state.userType === "player"
             && this.state.playerFetch && this.state.gameFetch && this.state.youtubeFetch) {
@@ -254,18 +263,18 @@ class UpdateProfile extends Component {
                     />
                 </div>
             )
-        } else if(this.state.error === false && this.state.userType === "clan"
-        && this.state.clanFetch ) {
+        } else if (this.state.error === false && this.state.userType === "clan"
+            && this.state.clanFetch) {
             return (
                 <UpdateClan clanData={this.state.clanData} />
             )
-        } else if(this.state.error === false && this.state.userType === "company"
-        && this.state.companyFetch){
+        } else if (this.state.error === false && this.state.userType === "company"
+            && this.state.companyFetch) {
             return (
                 <UpdateCompany companyData={this.state.companyData} />
             )
         }
-        
+
         else {
 
             return (

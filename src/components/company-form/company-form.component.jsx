@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import {
     TextField,
     Button,
@@ -32,6 +33,7 @@ class CompanyForm extends Component {
                 }
                 else {
                     alert(this.state.res);
+                    localStorage.setItem('currentUser',this.state.companyUsername);
                     this.props.history.push(`/updateProfile/${this.state.companyUsername}`)
                 }
             })
@@ -121,4 +123,4 @@ class CompanyForm extends Component {
     }
 }
 
-export default CompanyForm;
+export default withRouter(CompanyForm);

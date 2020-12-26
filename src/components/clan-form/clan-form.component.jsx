@@ -8,7 +8,7 @@ import {
     FormControlLabel,
     Radio,
 } from '@material-ui/core/';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class ClanForm extends Component {
 
@@ -17,25 +17,26 @@ class ClanForm extends Component {
         clanCategory: "casual",
         clanSize: "",
         clanGame: "",
-        clanUsername:"",
-        clanPassword:"",
-        res:"",
-        err:""
+        clanUsername: "",
+        clanPassword: "",
+        res: "",
+        err: ""
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:8080/clan/',{
-            method:'POST',
+        fetch('http://localhost:8080/clan/', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-        .then(async (res) => await this.setState({ res: await res.text() }))
-            .catch(async (error) => await this.setState({ err: true,res: error  }))
+            .then(async (res) => await this.setState({ res: await res.text() }))
+            .catch(async (error) => await this.setState({ err: true, res: error }))
             .finally(res => {
                 alert(this.state.res);
                 if (this.state.res === "Successfully added data to database") {
+                    localStorage.setItem('currentUser', this.state.clanUsername);
                     this.props.history.push(`/updateProfile/${this.state.clanUsername}`);
                 }
             })

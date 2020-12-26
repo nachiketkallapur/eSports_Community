@@ -56,6 +56,7 @@ class Login extends React.Component {
                 console.log(this.state);
                 alert(this.state.res);
                 if (this.state.res === "Successful login") {
+                    localStorage.setItem('currentUser',this.state.username);
                     this.props.history.push(`/dashboard`);
                 }
 
