@@ -33,8 +33,16 @@ class UpdateProfile extends Component {
     }
 
     componentWillMount() {
+        if(!localStorage.getItem("currentUser")) return;
+
         const { username } = this.props.match.params;
         const userType = this.categoriseUser(username);
+
+        if(localStorage.getItem("currentUser")!==username){
+            alert('You are not allowed to update others profile');
+            this.props.history.push('/dashboard');
+            return ;
+        }
 
         this.setState({ username, userType });
 
@@ -111,7 +119,7 @@ class UpdateProfile extends Component {
                     all: false
                 })
             })
-                .then(async (res) => await res.json())
+                .then( (res) =>  res.json())
                 .then(({ error, message, data }) => {
                     if (error === true) {
                         alert(message);
@@ -171,7 +179,7 @@ class UpdateProfile extends Component {
                     all: false
                 })
             })
-                .then(async (res) => res.json())
+                .then( (res) =>  res.json())
                 .then(({ message, error, data }) => {
                     if (error === true) {
                         alert(message);
@@ -204,7 +212,7 @@ class UpdateProfile extends Component {
                     all: false
                 })
             })
-                .then(async (res) => res.json())
+                .then((res) => res.json())
                 .then(({ message, error, data }) => {
                     if (error === true) {
                         alert(message);
@@ -248,7 +256,7 @@ class UpdateProfile extends Component {
     }
 
     render() {
-
+        if(!localStorage.getItem("currentUser")) return (<></>);
 
         console.log(this.state);
         if (this.state.error === false && this.state.userType === "player"

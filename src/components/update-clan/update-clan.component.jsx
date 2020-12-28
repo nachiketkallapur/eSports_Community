@@ -37,12 +37,12 @@ class UpdateClan extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { C_username, C_name, C_category, C_size, G_name,C_email,P_username } = this.state;
+        const { C_username, C_name, C_category, C_size, G_name,C_email,P_username,C_level } = this.state;
 
         fetch('http://localhost:8080/clan/update/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ C_username, C_name, C_category, C_size: parseInt(C_size), G_name,C_email,P_username })
+            body: JSON.stringify({ C_username, C_name, C_category, C_size: parseInt(C_size), G_name,C_email,P_username,C_level:parseInt(C_level) })
         })
             .then(async (res) => await res.json())
             .then(({ message, error }) => {
@@ -72,7 +72,7 @@ class UpdateClan extends Component {
 
     render() {
         // console.log(this.props);
-        const { C_username, C_name, C_category, C_size, G_name, gamePresentPreviously,C_email,P_username } = this.state;
+        const { C_username, C_name, C_category, C_size, G_name, gamePresentPreviously,C_email,P_username,C_level } = this.state;
 
         return (
             <div>
@@ -94,6 +94,17 @@ class UpdateClan extends Component {
                         label="Clan username"
                         name="C_username"
                         defaultValue={C_username}
+                        variant="filled"
+                        onChange={this.handleChange}
+                        style={{ width: "350px", margin: "5px 0px" }}
+                    /><br />
+                    <TextField
+                        required
+                        id="filled-required-2"
+                        label="Clan Level"
+                        name="C_level"
+                        defaultValue={C_level}
+                        type="number"
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}

@@ -1,4 +1,4 @@
-import { AppBar, Tabs, Tab, Grid, Card, Typography } from '@material-ui/core';
+import { AppBar, Tabs, Tab, Grid, Card, Typography, Button, TextField } from '@material-ui/core';
 import React, { Component } from 'react'
 
 class Dashboard extends Component {
@@ -9,6 +9,7 @@ class Dashboard extends Component {
             alert("Login to use dashboard");
             props.history.push('/login');
         }
+
         console.log(localStorage.getItem('currentUser'));
 
         this.state = {
@@ -26,11 +27,13 @@ class Dashboard extends Component {
             username: localStorage.getItem('currentUser'),
             message: "",
             error: false,
-            tabIndex: 0
+            tabIndex: 0,
+            newPlayerUsername: ""
         }
     }
 
     async componentDidMount() {
+        if (!localStorage.getItem("currentUser")) return;
         /*Fetch player data*/
         fetch('http://localhost:8080/player/fetch/', {
             method: 'POST',
@@ -64,7 +67,7 @@ class Dashboard extends Component {
                 all: true
             })
         })
-            .then(async (res) => await res.json())
+            .then( (res) =>  res.json())
             .then(({ error, message, data }) => {
                 if (error === true) {
                     alert(message);
@@ -89,7 +92,7 @@ class Dashboard extends Component {
                 all: true
             })
         })
-            .then(async (res) => res.json())
+            .then( (res) => res.json())
             .then(({ message, error, data }) => {
                 if (error === true) {
                     alert(message);
@@ -117,7 +120,7 @@ class Dashboard extends Component {
                 all: true
             })
         })
-            .then(async (res) => res.json())
+            .then( (res) => res.json())
             .then(({ message, error, data }) => {
                 if (error === true) {
                     alert(message);
@@ -144,6 +147,7 @@ class Dashboard extends Component {
     }
 
     categoriseUser = (username) => {
+        // if(!username) return;
         var temp1 = username
             .slice(0, username.length - 4)
             .split("")
@@ -162,23 +166,62 @@ class Dashboard extends Component {
         else return "none";
     }
 
+    handleChange = (event) => {
+        const {name,value} = event.target;
+        this.setState({[name]:value},()=>console.log(this.state))
+    }
     handleTabChange = (event, value) => {
         this.setState({ tabIndex: value })
+    }
+
+    handleRequestToJoinClan = (clanEmail) => {
+        /*Send a mail to clanEmail saying that currentUser(player)*/
+        console.log(clanEmail);
+    }
+
+    handleAddNewPlayerToClan = (event) => {
+        event.preventDefault();
+        const clanUsername = localStorage.getItem("currentUser");
+        const playerUsername = this.state.newPlayerUsername;
+
+        fetch('http://localhost:8080/clan/addNewPlayer/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clanUsername,
+                playerUsername
+            })
+        })
+        .then((res) =>  res.json())
+        .then(({error,message})=>{
+            if(error===true){
+                alert(message);
+                this.setState({error:true,message});
+            } else {
+                
+                alert(message);
+                this.setState({error:false,message})
+            }
+        })
+        .catch((err)=>{
+            console.log(err.message);
+            alert(err.message);
+            this.setState({error:true, message:err.message})
+        })
     }
 
     showPlayers = () => (
         <Grid container spacing={0} style={{ width: "100vw" }}>
             {
                 this.state.playerData.map(player => (
-                    <Grid item xs={3} key={player.P_username} style={{ cursor: "pointer", padding: "2px", height: "200px", margin: "5px 0px" }}>
+                    <Grid item xs={3} key={player.P_username} style={{ padding: "2px", height: "200px", margin: "5px 0px" }}>
                         <Card style={{
                             height: "100%",
                             // background: "#424242",
                             display: "flex", flexDirection: "column",
                             border: "3px solid black"
                         }}>
-                            <Typography><u>Name:</u>{player.P_name} </Typography>
-                            <Typography><u>Username:</u>{player.P_username} </Typography>
+                            <Typography><u>Name:</u>{player.P_name}</Typography>
                             <Typography><u>Age:</u>{player.P_age}</Typography>
                             <Typography><u>City:</u>{player.P_city}</Typography>
                             <Typography><u>State:</u>{player.P_state}</Typography>
@@ -204,6 +247,71 @@ class Dashboard extends Component {
         </Grid>
     )
 
+    showClans = () => (
+        <div>
+            <Grid container spacing={0} style={{ width: "100vw" }}>
+                {
+                    this.state.clanData.map(clan => (
+                        <Grid item xs={3} key={clan.C_username} style={{ padding: "2px", height: "200px", margin: "5px 0px" }}>
+                            <Card style={{
+                                height: "100%",
+                                // background: "#424242",
+                                display: "flex", flexDirection: "column",
+                                border: "3px solid black"
+                            }}>
+                                <Typography><u>Name:</u>{clan.C_name} </Typography>
+                                <Typography><u>Size:</u>{clan.C_size}</Typography>
+                                <Typography><u>Leader username:</u>{clan.P_username}</Typography>
+                                <Typography><u>Clan level:</u>{clan.C_level}</Typography>
+                                <Typography><u>Category:</u>{clan.C_category}</Typography>
+                                <Typography><u>Clan Game:</u>{clan.G_name}</Typography>
+                                {
+                                    this.state.userType === "player" && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            type="button"
+                                            style={{ width: "50%", margin: "0% 25%" }}
+                                            onClick={() => this.handleRequestToJoinClan(clan.C_email)}
+                                        >
+                                            Request to Join
+                                        </Button>
+                                    )
+                                }
+                            </Card>
+                        </Grid>
+                    ))
+                }
+            </Grid>
+            {
+                this.state.userType === "clan" && (
+                    <form onSubmit={this.handleAddNewPlayerToClan}>
+                    
+                        <h2>Add players to clan</h2>
+                        <TextField
+                            required
+                            id="filled-required"
+                            label="New Player Username"
+                            name="newPlayerUsername"
+                            value={this.state.newPlayerUsername}
+                            variant="filled"
+                            onChange={this.handleChange}
+                            style={{ width: "350px", margin: "5px 0px" }}
+                        /><br />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            style={{ width: "10%", margin: "0% 25%" }}
+                        >
+                            Add
+                        </Button>
+                    </form>
+                )
+            }
+        </div>
+    )
+
     componentDidUpdate() {
         /*append game data of a particular player to corresponding playerData object*/
         var modifiedPlayerData = {};
@@ -222,13 +330,14 @@ class Dashboard extends Component {
 
             this.setState({ modifiedPlayerData, isPlayerDataModified: true })
 
-            console.log(modifiedPlayerData['nachiket@player.com']);
+            // console.log(modifiedPlayerData['nachiket@player.com']);
         }
     }
 
     render() {
-
-
+        if (!localStorage.getItem("currentUser")) return (<></>);
+        // localStorage.removeItem("currentUser");
+        // localStorage.setItem("currentUser","soul@clan.com")
 
         return (
             <div>
@@ -249,6 +358,10 @@ class Dashboard extends Component {
                 {
                     this.state.tabIndex === 0 && this.state.playerFetch && this.state.isPlayerDataModified &&
                     (<this.showPlayers />)
+                }
+                {
+                    this.state.tabIndex === 1 && this.state.clanFetch &&
+                    (<this.showClans />)
                 }
             </div>
         )

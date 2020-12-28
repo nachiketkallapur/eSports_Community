@@ -94,6 +94,7 @@ class UpdatePlayer extends Component {
                     alert(message);
                     this.setState({ message, error: true })
                 } else {
+                    // console.log("Message: ",message);
                     this.setState({ message, error: false });
                 }
             })
