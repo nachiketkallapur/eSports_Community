@@ -10,8 +10,8 @@ import Dashboard from './pages/dashboard/dashboard.component';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
+    <div className="App" >
+      <Header /> 
       <Switch>
         <Route exact={true} path="/" component={HomePage} />
         <Route path='/login' component={Login} />
