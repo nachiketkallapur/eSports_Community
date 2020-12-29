@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UpdatePlayer from '../../components/update-player/update-player.component';
 import UpdateClan from '../../components/update-clan/update-clan.component';
 import UpdateCompany from '../../components/update-company/update-company.component';
-import Game4 from "../../images/game4.jpg";
+// import Game4 from "../../images/game4.jpg";
 
 import './update-profile.styles.scss';
 

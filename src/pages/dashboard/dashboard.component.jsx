@@ -13,10 +13,10 @@ import {
 import React, { Component } from "react";
 import ClanImage from "../../images/clan.jpg";
 import PlayerImage from "../../images/player.jpg";
-import Image1 from "../../images/img1.jpg";
-import Image2 from "../../images/img2.jpg";
-import Image3 from "../../images/img3.jpg";
-import ImageFour from "../../images/img4.jpg";
+// import Image1 from "../../images/img1.jpg";
+// import Image2 from "../../images/img2.jpg";
+// import Image3 from "../../images/img3.jpg";
+// import ImageFour from "../../images/img4.jpg";
 
 import './dashboard.styles.scss';
 
@@ -61,20 +61,24 @@ class Dashboard extends Component {
             }),
         })
             .then((res) => res.json())
-            .then(({ data, message }) => {
+            .then(({error, data, message }) => {
                 // console.log("PYD: ",data);
-                if (data.length === 0) {
+                if (error===true){
+                    alert(message);
+                    this.setState({error:true,message})
+                }
+                else if (data.length === 0) {
                     alert(message);
                     this.props.history.push("/login");
                     return;
                     // this.setState({ error: true, message, userType, username, playerData: {} });
                 } else {
-                    this.setState({ playerData: data, message, playerFetch: true });
+                    this.setState({ error:false,playerData: data, message, playerFetch: true });
                 }
             })
             .catch((error) => {
                 alert(error.message);
-                this.setState({ error: true, message: error.messge });
+                this.setState({ error: true, message: error.message });
             });
 
         /*Fetch game data*/
@@ -193,10 +197,31 @@ class Dashboard extends Component {
         this.setState({ tabIndex: value });
     };
 
-    handleRequestToJoinClan = (clanEmail) => {
+    handleRequestToJoinClan = (clanEmail,clanName) => {
         /*Send a mail to clanEmail saying that currentUser(player)*/
         console.log(clanEmail);
         const playerUsername = localStorage.getItem('currentUser');
+        fetch("http://localhost:8080/clan/requestToJoin/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                clanEmail,
+                playerUsername,
+            })
+        })
+        .then(res => res.json())
+        .then(({error,message}) => {
+            if(error===true){
+                alert(message);
+                this.setState({error:true, message})
+            } else {
+                alert("Request sent successfully to " + clanName + "\nWait for their reply");
+                this.setState({error:false,message})
+            }
+        })
+        .catch(err => {
+            alert(err.message);
+        })
 
     };
 
@@ -204,13 +229,18 @@ class Dashboard extends Component {
         event.preventDefault();
         const clanUsername = localStorage.getItem("currentUser");
         const playerUsername = this.state.newPlayerUsername;
-
+        const playerObject = this.state.playerData.filter(player => player.P_username===playerUsername);
+        const playerEmail = playerObject[0].P_email;
+        const playerName = playerObject[0].P_name;
+      
         fetch("http://localhost:8080/clan/addNewPlayer/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 clanUsername,
                 playerUsername,
+                playerEmail,
+                playerName
             }),
         })
             .then((res) => res.json())
@@ -352,7 +382,7 @@ class Dashboard extends Component {
                                     color="primary"
                                     type="button"
                                     style={{ width: "50%", margin: "0% 25%" }}
-                                    onClick={() => this.handleRequestToJoinClan(clan.C_email)}
+                                    onClick={() => this.handleRequestToJoinClan(clan.C_email,clan.C_name)}
                                 >
                                     Request to Join
                                 </Button>
@@ -431,6 +461,7 @@ class Dashboard extends Component {
                         textColor="primary"
                         variant="fullWidth"
                         aria-label="full width tabs example"
+                        style={{fontWeight:"bolder"}}
                     >
                         <Tab label="Player" />
                         <Tab label="Clan" />

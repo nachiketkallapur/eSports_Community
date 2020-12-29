@@ -11,7 +11,7 @@ import './header.styles.scss'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow:1,
+    flexGrow: 1,
     height: "0px",
   },
   menuButton: {
@@ -27,49 +27,58 @@ const useStyles = makeStyles((theme) => ({
 
 function Header(props) {
   const classes = useStyles();
-
+  console.log(props)
   const handleSignOut = () => {
     // auth.signOut();
-    localStorage.removeItem("currentUserEmail");
+    localStorage.removeItem("currentUser");
     alert("Signed Out Successfully");
     props.history.push("/")
 
   }
 
-  
+  const currentUser = localStorage.getItem("currentUser");
+
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: 'transparent', boxShadow: 'none' }}>
         <Toolbar>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            style={{ color: props.location.pathname === "/dashboard" ? "black" : "white" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography style={{cursor:"pointer"}} onClick={() => props.history.push("/")} className={classes.title} variant="h6" noWrap>
+          <Typography style={{ cursor: "pointer", color: props.location.pathname === "/dashboard" ? "black" : "white" }} onClick={() => props.history.push("/")} className={classes.title} variant="h6" noWrap>
             eSports Community
           </Typography>
-          
-            {
-              localStorage.getItem("currentUser") ?
-              <Typography style={{position:"relative", left:"5%"}}>
-                Welcome {localStorage.getItem("currentUser")}
-              </Typography>:
-              <></>
-            }
+
           {
-            localStorage.getItem("currentUser") ?
-              <div style={{position:"absolute",right:"1%",display:"flex", flexDirection:"row"}}>
-                <Link to='/dashboard' style={{  cursor: "pointer", padding: "15px", color: "white" }}>DASHBOARD</Link>
-          
-                <div onClick={handleSignOut} style={{  cursor: "pointer", padding: "15px", color: "white" }}>SIGN OUT</div>
+            currentUser ?
+              <Typography
+                style={{
+                  position: "relative",
+                  left: "5%",
+                  cursor:"pointer",
+                  color: props.location.pathname === "/dashboard" ? "black" : "white"
+                }}
+                onClick={() => props.history.push(`/updateProfile/${currentUser}`)}>
+                Welcome {currentUser}
+              </Typography> :
+              <></>
+          }
+          {
+            currentUser ?
+              <div style={{ position: "absolute", right: "1%", display: "flex", flexDirection: "row" }}>
+                <Link to='/dashboard' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>DASHBOARD</Link>
+
+                <div onClick={handleSignOut} style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>SIGN OUT</div>
               </div>
               :
-              <div style={{position:"absolute",right:"1%",display:"flex", flexDirection:"row"}}>
-                <Link to='/login' style={{  cursor: "pointer", padding: "15px", color: "white" }}>SIGN IN</Link>
+              <div style={{ position: "absolute", right: "1%", display: "flex", flexDirection: "row" }}>
+                <Link to='/login' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>SIGN IN</Link>
               </div>
           }
         </Toolbar>

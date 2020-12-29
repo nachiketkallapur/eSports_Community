@@ -62,16 +62,16 @@ class UpdatePlayer extends Component {
                 codPresentPreviously = true;
             }
             return 1;
-             
+
         })
 
-        
+
         // console.log(cod,pubg,faug);
 
         var isGameRecordPresent = this.state.gameData.length > 0 ? true : false;
 
         this.setState({ pubgLevel, faugLevel, codLevel, pubg, cod, faug, isGameRecordPresent, pubgPresentPreviously, faugPresentPreviously, codPresentPreviously },
-            ()=>console.log(this.state));
+            () => console.log(this.state));
 
     }
 
@@ -80,7 +80,7 @@ class UpdatePlayer extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { P_name, P_username, P_city, P_state, P_age, Y_channelName,
+        const { P_name, P_username, P_city, P_state, P_age, P_email, Y_channelName,
             pubg, cod, faug, pubgLevel, codLevel, faugLevel, isGameRecordPresent,
             pubgPresentPreviously, codPresentPreviously, faugPresentPreviously } = this.state;
 
@@ -88,7 +88,7 @@ class UpdatePlayer extends Component {
         fetch('http://localhost:8080/player/update/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ P_name, P_username, P_city, P_state, P_age,Y_channelName })
+            body: JSON.stringify({ P_name, P_username, P_city, P_state, P_age, P_email, Y_channelName })
         })
             .then(async (res) => await res.json())
             .then(({ message, error }) => {
@@ -143,7 +143,7 @@ class UpdatePlayer extends Component {
         this.setState({ [event.target.name]: event.target.checked }, () => console.log(this.state));
     }
     render() {
-        const { P_name, P_username, P_city, P_state, P_age, Y_channelName, pubg, cod, faug,
+        const { P_name, P_username, P_city, P_state, P_age, P_email, Y_channelName, pubg, cod, faug,
             pubgLevel, faugLevel, codLevel } = this.state;
         // if(!(playerData || youtubeData || gameData)){
         //     this.setState({playerData,youtubeData,gameData},() => console.log(this.state));
@@ -152,7 +152,8 @@ class UpdatePlayer extends Component {
 
         return (
             <div>
-                <h4>Update Player</h4>
+                <br/>
+                <h2>Player Profile</h2> 
                 <form className='update-player-form' autoComplete="off" onSubmit={this.handleSubmit}>
                     <div>
                         <TextField
@@ -167,7 +168,7 @@ class UpdatePlayer extends Component {
                         /><br />
                         <TextField
                             disabled
-                            id="filled-required-1"
+                            id="filled-required-2"
                             label="Player username"
                             name="P_username"
                             defaultValue={P_username}
@@ -177,7 +178,7 @@ class UpdatePlayer extends Component {
                         /><br />
                         <TextField
                             required
-                            id="filled-required-1"
+                            id="filled-required-3"
                             label="Player Age"
                             name="P_age"
                             defaultValue={P_age}
@@ -187,8 +188,19 @@ class UpdatePlayer extends Component {
                             style={{ width: "350px", margin: "5px 0px" }}
                         /><br />
                         <TextField
+                            required
+                            id="filled-required-7"
+                            label="Player Email"
+                            name="P_email"
+                            defaultValue={P_email}
+                            type="email"
+                            variant="filled"
+                            onChange={this.handleChange}
+                            style={{ width: "350px", margin: "5px 0px" }}
+                        /><br />
+                        <TextField
                             disabled
-                            id="filled-required-1"
+                            id="filled-required-4"
                             label="Player City"
                             name="P_city"
                             defaultValue={P_city}
@@ -198,7 +210,7 @@ class UpdatePlayer extends Component {
                         /><br />
                         <TextField
                             disabled
-                            id="filled-required-1"
+                            id="filled-required-5"
                             label="Player State"
                             name="P_state"
                             defaultValue={P_state}
@@ -207,7 +219,7 @@ class UpdatePlayer extends Component {
                             style={{ width: "350px", margin: "5px 0px" }}
                         /><br />
                         <TextField
-                            id="filled-required-1"
+                            id="filled-required-6"
                             label="Youtube Channel"
                             name="Y_channelName"
                             defaultValue={Y_channelName}
@@ -290,13 +302,14 @@ class UpdatePlayer extends Component {
                                 </>
                             )
                         }
-                    </div>
+                    </div><br />
+
                     <Button
                         variant="contained"
                         color="primary"
                         type="submit"
                     >
-                        Submit
+                        Update Profile
                     </Button>
 
                 </form>
