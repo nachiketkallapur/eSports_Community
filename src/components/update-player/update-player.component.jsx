@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+
 import {
     TextField,
     Button,
@@ -11,6 +12,7 @@ import {
     Checkbox,
     FormGroup
 } from '@material-ui/core/';
+
 
 import './update-player.styles.scss';
 
