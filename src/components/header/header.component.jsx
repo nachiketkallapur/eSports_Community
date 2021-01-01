@@ -78,6 +78,7 @@ function Header(props) {
               </div>
               :
               <div style={{ position: "absolute", right: "1%", display: "flex", flexDirection: "row" }}>
+                <Link to='/register' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>REGISTER</Link>
                 <Link to='/login' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>SIGN IN</Link>
               </div>
           }

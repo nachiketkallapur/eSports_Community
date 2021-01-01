@@ -185,7 +185,7 @@ class UpdatePlayer extends Component {
                             variant="filled"
                             type="number"
                             onChange={this.handleChange}
-                            style={{ width: "350px", margin: "5px 0px" }}
+                            style={{ width: "350px", margin: "5px 0px",color:"blue" }}
                         /><br />
                         <TextField
                             required
