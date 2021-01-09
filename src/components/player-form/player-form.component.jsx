@@ -32,6 +32,11 @@ class PlayerForm extends Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
+        if(this.state.playerUsername.split('@')[this.state.playerUsername.split('@').length-1]!=="player.com"){
+            alert("Use player.com as suffix in username")
+            return;
+        }
+
         fetch('http://localhost:8080/player/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

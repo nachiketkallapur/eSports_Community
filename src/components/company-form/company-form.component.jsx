@@ -19,6 +19,11 @@ class CompanyForm extends Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
+        const temp = this.state.companyUsername.split('@');
+        if(temp[temp.length-1]!=="company.com"){
+            alert("Use company.com as suffix in username")
+            return;
+        }
 
         fetch('http://localhost:8080/company/',{
             method:'POST',

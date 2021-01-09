@@ -26,6 +26,12 @@ class ClanForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
+        const temp = this.state.clanUsername.split('@');
+        if(temp[temp.length -1]!=="clan.com"){
+            alert("Use clan.com as suffix in username");
+            return;
+        }
+
         fetch('http://localhost:8080/clan/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

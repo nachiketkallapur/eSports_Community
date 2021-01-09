@@ -287,9 +287,10 @@ class Dashboard extends Component {
         event.preventDefault();
         const clanUsername = localStorage.getItem("currentUser");
         const playerUsername = this.state.newPlayerUsername;
+
         const playerObject = this.state.playerData.filter(player => player.P_username === playerUsername);
-        const playerEmail = playerObject[0].P_email;
-        const playerName = playerObject[0].P_name;
+        const playerEmail = playerObject.length > 0 ? playerObject[0].P_email : "";
+        const playerName = playerObject.length > 0 ? playerObject[0].P_name : "";
 
         fetch("http://localhost:8080/clan/addNewPlayer/", {
             method: "POST",
@@ -339,7 +340,8 @@ class Dashboard extends Component {
             eventDataTime: newEventDateTime,
             eventOrganiser: organiser,
             eventOrganiserEmail: newEventOrganiserEmail,
-            interestedUsers: []
+            interestedUsers: [],
+            confirmedUsers: []
         })
             .then(() => {
                 alert("Event Registered Successfully");
@@ -350,6 +352,7 @@ class Dashboard extends Component {
                     newEventLocation: "",
                     newEventDateTime: ""
                 })
+                window.location.reload();
             })
             .catch((error) => {
                 console.log(error);
@@ -371,7 +374,7 @@ class Dashboard extends Component {
 
     handleConfirmEventParticipation = (eventObject) => {
         /*eventObject for confirming participation*/
-        localStorage.setItem("eventObject",JSON.stringify(eventObject));
+        localStorage.setItem("eventObject", JSON.stringify(eventObject));
         this.props.history.push('/confirmParticipation');
     }
 
@@ -522,6 +525,7 @@ class Dashboard extends Component {
             </Grid>
             {this.state.userType === "clan" && (
                 <form onSubmit={this.handleAddNewPlayerToClan} autoComplete='off'>
+                    <br />
                     <h2>Add players to clan</h2>
                     <TextField
                         required

@@ -59,8 +59,9 @@ class UpdateCompany extends Component {
 
         return (
             <div>
-                <h1>Update Company</h1>
-                <form autoComplete="off" onSubmit={this.handleSubmit}>
+                <br/>
+                <h2>Update Company</h2>
+                <form className='update-company-form' autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField
                         required
                         id="filled-required-1"

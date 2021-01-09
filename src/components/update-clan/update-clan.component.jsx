@@ -76,8 +76,9 @@ class UpdateClan extends Component {
 
         return (
             <div>
+                <br/>
                 <h2>Update Clan</h2>
-                <form autoComplete="off" onSubmit={this.handleSubmit}>
+                <form className='update-clan-form' autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField
                         disabled
                         id="filled-required-1"
