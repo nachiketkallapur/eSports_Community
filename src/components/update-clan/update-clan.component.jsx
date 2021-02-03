@@ -192,7 +192,6 @@ class UpdateClan extends Component {
                         label="Clan Leader Username"
                         name="P_username"
                         defaultValue={P_username}
-                        type="email"
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}

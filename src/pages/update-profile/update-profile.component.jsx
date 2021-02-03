@@ -70,6 +70,7 @@ class UpdateProfile extends Component {
                     // console.log("PYD: ",data);
                     if (data.length === 0) {
                         alert(message);
+                        localStorage.removeItem("currentUser");
                         this.props.history.push("/login");
                         return;
                         // this.setState({ error: true, message, userType, username, playerData: {} });
@@ -188,8 +189,9 @@ class UpdateProfile extends Component {
                         alert(message);
                         this.setState({ message, error, clanData: {} })
                     } else if (data.length === 0) {
-                        alert("Clan doesn;t exist in our records");
+                        alert("Clan doesn't exist in our records");
                         // this.setState({message:"Clan doesn;t exist in our records",erro:false,clanData:{}})
+                        localStorage.removeItem("currentUser");
                         this.props.history.push("/login");
                         return;
                     }

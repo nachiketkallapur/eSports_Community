@@ -27,7 +27,7 @@ class ClanForm extends Component {
         event.preventDefault();
 
         const temp = this.state.clanUsername.split('@');
-        if(temp[temp.length -1]!=="clan.com"){
+        if (temp[temp.length - 1] !== "clan.com") {
             alert("Use clan.com as suffix in username");
             return;
         }
@@ -50,8 +50,12 @@ class ClanForm extends Component {
 
     handleChange = (event) => {
         const { name, value } = event.target;
+        if([name][0]==="clanGame"){
+            this.setState({ [name]: value.toUpperCase() },() => console.log(this.state));
+        } else {
+            this.setState({ [name]: value }, () => console.log(this.state));
 
-        this.setState({ [name]: value }, () => console.log(this.state));
+        }
     }
 
     render() {
@@ -61,7 +65,7 @@ class ClanForm extends Component {
             clanSize,
             clanGame,
             clanUsername,
-            clanPassword
+            clanPassword,
         } = this.state;
         return (
             <div>
@@ -78,6 +82,7 @@ class ClanForm extends Component {
                         style={{ width: "350px", margin: "5px 0px" }}
                     /><br />
                     <TextField
+                        inputProps={{ style: { textTransform: 'uppercase' } }}
                         required
                         id="filled-required-2"
                         label="Clan Game"
@@ -139,7 +144,9 @@ class ClanForm extends Component {
                         variant="filled"
                         onChange={this.handleChange}
                         style={{ width: "350px", margin: "5px 0px" }}
-                    /><br /><br />
+                    />
+                    <br />
+                    <br />
                     <Button
                         variant="contained"
                         color="primary"

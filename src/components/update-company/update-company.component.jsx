@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import {
     TextField,
     Button,
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControlLabel
 } from '@material-ui/core/';
 
 import './update-company.styles.scss';
