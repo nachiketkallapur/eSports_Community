@@ -98,6 +98,33 @@ class UpdatePlayer extends Component {
                 } else {
                     // console.log("Message: ",message);
                     this.setState({ message, error: false });
+
+                    //iff player is updated successfully then only update game data
+                    fetch('http://localhost:8080/game/update/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            P_username, pubg, cod, faug, isGameRecordPresent,
+                            pubgLevel: parseInt(pubgLevel), codLevel: parseInt(codLevel), faugLevel: parseInt(faugLevel),
+                            pubgPresentPreviously, codPresentPreviously, faugPresentPreviously
+                        })
+                    })
+                        .then(async (res) => await res.json())
+                        .then(({ message, error }) => {
+                            if (error === true) {
+                                alert(message);
+                                this.setState({ message, error: true });
+                            } else {
+                                // if (message==="player_plays_game table updated successfully")
+                                alert("Successfully updated profile")
+                                this.setState({ message, error: false });
+                            }
+                        })
+                        .catch(err => {
+                            alert(err.message);
+                            this.setState({ message: err.message, error: true })
+                        })
+
                 }
             })
             .catch(err => {
@@ -106,30 +133,7 @@ class UpdatePlayer extends Component {
             })
 
 
-        fetch('http://localhost:8080/game/update/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                P_username, pubg, cod, faug, isGameRecordPresent,
-                pubgLevel: parseInt(pubgLevel), codLevel: parseInt(codLevel), faugLevel: parseInt(faugLevel),
-                pubgPresentPreviously, codPresentPreviously, faugPresentPreviously
-            })
-        })
-            .then(async (res) => await res.json())
-            .then(({ message, error }) => {
-                if (error === true) {
-                    alert(message);
-                    this.setState({ message, error: true });
-                } else {
-                    // if (message==="player_plays_game table updated successfully")
-                    alert("Successfully updated profile")
-                    this.setState({ message, error: false });
-                }
-            })
-            .catch(err => {
-                alert(err.message);
-                this.setState({ message: err.message, error: true })
-            })
+
 
 
     }
@@ -152,8 +156,8 @@ class UpdatePlayer extends Component {
 
         return (
             <div>
-                <br/>
-                <h2>Player Profile</h2> 
+                <br />
+                <h2>Player Profile</h2>
                 <form className='update-player-form' autoComplete="off" onSubmit={this.handleSubmit}>
                     <div>
                         <TextField
@@ -185,7 +189,7 @@ class UpdatePlayer extends Component {
                             variant="filled"
                             type="number"
                             onChange={this.handleChange}
-                            style={{ width: "350px", margin: "5px 0px",color:"blue" }}
+                            style={{ width: "350px", margin: "5px 0px", color: "blue" }}
                         /><br />
                         <TextField
                             required
