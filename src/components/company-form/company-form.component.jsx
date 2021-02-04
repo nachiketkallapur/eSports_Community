@@ -12,7 +12,7 @@ class CompanyForm extends Component {
         companyBio: "",
         companyUsername:"",
         companyPassword:"",
-        res:"",
+        message:"",
         err:false
     }
 
@@ -34,18 +34,25 @@ class CompanyForm extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         })
-        .then(async (res) => this.setState({ res: await res.text() }))
-            .catch(async (err) => this.setState({ res: await err.message, err: true }))
-            .finally(res => {
-                if (this.state.err) {
-                    return alert(this.state.res);
-                }
-                else {
-                    alert(this.state.res);
-                    localStorage.setItem('currentUser',this.state.companyUsername);
-                    this.props.history.push(`/updateProfile/${this.state.companyUsername}`)
-                }
-            })
+        .then(res => res.json())
+        .then(({error,message}) => {
+            if (error===true) {
+                console.log("Error is true")
+                alert(message);
+                this.state({error,message});
+                return;
+            }
+            else {
+                alert(message);
+                console.log("Error is false")
+
+                this.state({error,message});
+                localStorage.setItem('currentUser',this.state.companyUsername);
+                this.props.history.push(`/updateProfile/${this.state.companyUsername}`)
+            }
+        })
+        .catch((err) => this.setState({ message: err.message, error: true }))
+           
         
     }
 
