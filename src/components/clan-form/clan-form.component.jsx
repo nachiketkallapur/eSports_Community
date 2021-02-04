@@ -32,6 +32,16 @@ class ClanForm extends Component {
             return;
         }
 
+        if(this.state.clanSize<=0) {
+            alert("Enter valid clan size");
+            return;
+        } 
+
+        if(!(this.state.clanPassword.length >=8 && this.state.clanPassword.length <=20)){
+            alert('Minimum password length is 8\nMaximum password length is 20');
+            return;
+        }
+
         fetch('http://localhost:8080/clan/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

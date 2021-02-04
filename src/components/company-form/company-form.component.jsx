@@ -24,6 +24,10 @@ class CompanyForm extends Component {
             alert("Use company.com as suffix in username")
             return;
         }
+        if(!(this.state.companyPassword.length >=8 && this.state.companyPassword.length <=20)){
+            alert('Minimum password length is 8\nMaximum password length is 20');
+            return;
+        }
 
         fetch('http://localhost:8080/company/',{
             method:'POST',

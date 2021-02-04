@@ -31,12 +31,35 @@ class PlayerForm extends Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
+        // console.log(this.state.playerPassword.length);
 
-        if(this.state.playerUsername.split('@')[this.state.playerUsername.split('@').length-1]!=="player.com"){
-            alert("Use player.com as suffix in username")
+        if(this.state.playerAge<16){
+            if(this.state.playerAge<=0) {
+                alert("Enter valid player age");
+                return;
+            } else {
+                alert('Age Limit to signup for esportsCommunity is 16');
+                return;
+            }
+        } else if(this.state.playerAge>80){
+            alert("Maximum age of a player can't be greater than 80");
             return;
         }
 
+
+        
+        if(this.state.playerUsername.split('@')[this.state.playerUsername.split('@').length-1]!=="player.com"){
+            alert("Use player.com as suffix in username")
+            // console.log("In handleSubmit");
+            return;
+        }
+
+        if(!(this.state.playerPassword.length >=8 && this.state.playerPassword.length <=20)){
+            alert('Minimum password length is 8\nMaximum password length is 20');
+            return;
+        }
+
+        
         fetch('http://localhost:8080/player/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,7 +69,7 @@ class PlayerForm extends Component {
             .catch((error) => this.setState({ res: error, err: true }))
             .finally(res => {
 
-                console.log(this.state);
+                // console.log(this.state);
                 alert(this.state.res);
                 if (this.state.res === "Successfully added data to database") {
                     localStorage.setItem('currentUser',this.state.playerUsername);
