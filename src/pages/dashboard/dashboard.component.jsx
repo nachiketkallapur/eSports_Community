@@ -332,6 +332,8 @@ class Dashboard extends Component {
 
         const organiser = localStorage.getItem('currentUser');
 
+
+
         firestore.doc(`events/${newEventName}`).set({
             eventName: newEventName,
             eventGame: newEventGame,
@@ -344,15 +346,38 @@ class Dashboard extends Component {
             confirmedUsers: []
         })
             .then(() => {
-                alert("Event Registered Successfully");
-                this.setState({
-                    newEventName: "",
-                    newEventGame: "PUBG",
-                    newEventDescription: "",
-                    newEventLocation: "",
-                    newEventDateTime: ""
+                fetch("http://localhost:8080/company/sponsor/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        companyUsername: organiser, game: newEventGame
+                    }),
                 })
-                window.location.reload();
+                    .then(res => res.json())
+                    .then(({ error, message }) => {
+                        if (error === true) {
+                            alert(message);
+                            this.setState({ error: true, message });
+                        } else {
+                            // alert(message);
+                            alert("Event Registered Successfully");
+                            this.setState({
+                                newEventName: "",
+                                newEventGame: "PUBG",
+                                newEventDescription: "",
+                                newEventLocation: "",
+                                newEventDateTime: "",
+                                error: false,
+                                message
+                            })
+                            window.location.reload();
+                        }
+                    })
+                    .catch(err => {
+                        alert(err.message);
+                        this.setState({ error: true, message: err.message })
+                    })
+
             })
             .catch((error) => {
                 console.log(error);

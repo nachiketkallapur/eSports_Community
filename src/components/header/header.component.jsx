@@ -47,11 +47,11 @@ function Header(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            style={{ color: props.location.pathname === "/dashboard" ? "black" : "white" }}
+            style={{ color: props.location.pathname === "/dashboard"|| props.location.pathname === "/chart" ? "black" : "white" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography style={{ cursor: "pointer", color: props.location.pathname === "/dashboard" ? "black" : "white" }} onClick={() => props.history.push("/")} className={classes.title} variant="h6" noWrap>
+          <Typography style={{ cursor: "pointer", color: props.location.pathname === "/dashboard" || props.location.pathname === "/chart"? "black" : "white" }} onClick={() => props.history.push("/")} className={classes.title} variant="h6" noWrap>
             eSports Community
           </Typography>
 
@@ -61,8 +61,9 @@ function Header(props) {
                 style={{
                   position: "relative",
                   left: "5%",
-                  cursor:"pointer",
-                  color: props.location.pathname === "/dashboard" ? "black" : "white"
+                  cursor: "pointer",
+                  color: props.location.pathname === "/dashboard" || props.location.pathname === "/chart" ?
+                    "black" : "white"
                 }}
                 onClick={() => props.history.push(`/updateProfile/${currentUser}`)}>
                 Welcome {currentUser}
@@ -72,14 +73,14 @@ function Header(props) {
           {
             currentUser ?
               <div style={{ position: "absolute", right: "1%", display: "flex", flexDirection: "row" }}>
-                <Link to='/dashboard' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>DASHBOARD</Link>
-
-                <div onClick={handleSignOut} style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>SIGN OUT</div>
+                <Link to='/dashboard' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" || props.location.pathname === "/chart"? "black" : "white" }}>DASHBOARD</Link>
+                <Link to='/chart' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" || props.location.pathname === "/chart"? "black" : "white" }}>CHART</Link>
+                <div onClick={handleSignOut} style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard"|| props.location.pathname === "/chart" ? "black" : "white" }}>SIGN OUT</div>
               </div>
               :
               <div style={{ position: "absolute", right: "1%", display: "flex", flexDirection: "row" }}>
-                <Link to='/register' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>REGISTER</Link>
-                <Link to='/login' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard" ? "black" : "white" }}>SIGN IN</Link>
+                <Link to='/register' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard"|| props.location.pathname === "/chart" ? "black" : "white" }}>REGISTER</Link>
+                <Link to='/login' style={{ cursor: "pointer", padding: "15px", color: props.location.pathname === "/dashboard"|| props.location.pathname === "/chart" ? "black" : "white" }}>SIGN IN</Link>
               </div>
           }
         </Toolbar>

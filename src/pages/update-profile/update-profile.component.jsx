@@ -5,6 +5,7 @@ import UpdateCompany from '../../components/update-company/update-company.compon
 // import Game4 from "../../images/game4.jpg";
 
 import './update-profile.styles.scss';
+import './update-profile.styles.css';
 
 class UpdateProfile extends Component {
 
@@ -295,7 +296,7 @@ class UpdateProfile extends Component {
         else {
 
             return (
-                <h1>Update Profile Page</h1>
+                <div className='loader'>Update Profile Page</div>
             )
         }
 
