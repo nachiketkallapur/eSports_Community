@@ -11,6 +11,8 @@ import ConfirmParticipation from "./pages/confirm-participation/confirm-particip
 // import PDFGenerator from "./pages/pdf-generator/pdf-generator.component";
 import Chart from "./pages/chart/chart.component";
 
+import './App.css';
+
 function App() {
   return (
     <div className="App" >
